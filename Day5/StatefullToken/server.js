@@ -84,9 +84,6 @@ const generateToken = () => {
 
 const authMiddleWare = (req, res, next) => {
   const reqToken = req.headers["token"];
-  console.log(reqToken);
-
-  console.log(reqToken);
 
   const verifiedUser = userArr.find((user) => {
     if (reqToken === user.token) {
@@ -153,7 +150,9 @@ app.post("/signin", (req, res) => {
   });
 });
 
-app.get("/courses", authMiddleWare, (req, res) => {
+app.use(authMiddleWare)
+
+app.get("/courses",  (req, res) => {
   res.json({
     msg: "token Verified",
     course: {
@@ -164,7 +163,7 @@ app.get("/courses", authMiddleWare, (req, res) => {
   });
 });
 
-app.get("/me", authMiddleWare, (req, res) => {
+app.get("/me", (req, res) => {
   const { user } = req;
 
   res.json({
